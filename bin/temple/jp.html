@@ -31,7 +31,7 @@
 
 </head>
 <body>
-<div class="container container-fill">
+<div class="container container-fill" style="background-color: #CE0000">
 
 
     {{ template "audio.html" . }}
@@ -186,10 +186,10 @@ $.getJSON("/wx/get_frist?uuid={{ .uuid }}",function(data){
   </script>
 
 
-    <div class="time-item5">
+    <div class="time-item5" style="color: white;">
         <i class="iconfont icon-daojishi"></i>
         投票日期: {{.aptimestart}}到{{.aptimeend}} </div>
-    <div class="time-item5">
+    <div class="time-item5" style="color: white;">
         <i class="iconfont icon-daojishi"></i>
         活动剩余: <span id="day_show">0天</span>
         <span id="hour_show">0时</span>
