@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>{{ .title}}</title>
+	<meta name="format-detection" content="telephone=no, address=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-touch-fullscreen" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+
+    {{ template "incude.html" . }}
+
+		<style>
+
+	 .tousu{
+	   position:fixed;
+	   background-color:rgba(102,102,102,0.7);
+	   width:34px;
+	   height:34px;
+	   font-size:14px;
+	   line-height:34px;
+	   text-align:center;
+	   color:#fff;
+	   right:17px;
+	    top:33px;
+       border-radius:18px;
+	   z-index:9999;
+	 }
+  </style>
+
+</head>
+<body>
+<div class="container container-fill"  style="background-color: #600000		">
+
+    {{ template "audio.html" . }}
+
+
+
+ <style>
+ .threebutton a{background-color:#6281FD;}
+ .divmain11 .divsub{background:#6281FD;}
+ .content .list_box li a.vote{background:#6281FD;}
+ .macol{background:#6281FD;}
+.footer li>a.on .nav{color:#6281FD}
+.footer li>a.on .nav p{color:#6281FD}
+.footer li>a.on .nav{color:#6281FD}
+.rankp{background:#6281FD;}
+.lapiao .l{background:#6281FD;}
+.lapiao .r{background:#6281FD;}
+.donate_bank_p .weui-btn_primary{background:#6281FD;color:#fff}
+.threebutton a:link{color:#fff}
+.threebutton a:visited{color:#fff}
+#mar{background-color:#666;}
+.content .list_box li>div .number{background-color:#6281FD;}
+.twobutton a.active{background-color:#6281FD}
+.twobutton a:nth-child(2).active{background-color:#6281FD}
+ </style>
+<!-- <div class="tousu"><p><a href="/jubao/jubao.html" style="color:#fff">投诉</a></p></div> -->
+<style>
+#rdlist{display:none;margin-left:-100%;position:fixed;left:0px;z-index:999999;padding:5px 5px 5px 2px;background:rgba(0,0,0,0.5);border-top-right-radius:20px;border-bottom-right-radius:20px;color:#fff;overflow:hidden;height:35px;line-height:35px;font-size:12px}
+#rdlist div{margin-top:-5px}
+#rdlist div img{width:30px;height:30px;border-radius:20px;margin-top:-2px}
+</style>
+<div id="rdlist">
+  <div ><img></img> <span></span></div>
+
+</div>
+
+
+<script>
+//每条弹幕发送间隔
+var imagetrue=false
+var looper_time=5*1000;
+//是否首次执行
+var run_once=true;
+do_barrager();
+
+function do_barrager() {
+    if (run_once) {
+        //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+        looper = setInterval(do_barrager, looper_time);
+        run_once = false;
+    }
+    //获取
+
+    //是否有数据
+
+        //$('.swiper-container').barrager(data);
+$.getJSON("/wx/get_frist?uuid={{ .uuid}}",function(data){
+      //是否有数据
+      if(data.info){
+           //$('.swiper-container').barrager(data);
+
+		   $('#rdlist div img').attr('src',"/images/77a31255d070a53fa92102405bde4220.png");
+		   $('#rdlist div span').text(data.info);
+		   $("#rdlist").show();
+			 $("#rdlist").animate({marginLeft:"0px"},500,'swing',function(){
+				 setTimeout(function(){
+				 $("#rdlist").fadeOut(5000,function(){
+				   $("#rdlist").css('margin-left',"-100%");
+				 });
+
+				 },3000);
+			  });
+
+
+      }
+
+  });
+
+
+
+}
+
+</script>
+
+
+ <div class="swiper-container">
+     {{ template "roll.html" . }}
+     <a href="/wx/toushu">
+         <div style="z-index: 999;position:absolute;width: 50px;height:50px;margin-top: 30px;margin-left: 88%;border-radius: 50%;background-color: gray;text-align: center">
+             <div style="margin-top: 15px">
+                 <font style="font-size: 15px;color:white;padding-top: 25px">投诉</font>
+             </div>
+         </div>
+     </a>
+    <div class="swiper-wrapper">
+        {{ range $index,$value:= .topimges}}
+            {{ if ne $value "" }}
+                <div class="swiper-slide" ><a href=""><img style="height: 340px" src="{{ $value}}"></a></div>
+            {{ end  }}
+        {{ end }}
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <script>
+
+    $(function(){
+
+	 var mySwiper = new Swiper('.swiper-container', {
+		autoplay:2000,//可选选项，自动滑动
+		speed:500,
+		pagination : '.swiper-pagination',
+		autoHeight:true
+
+	});
+
+
+
+   });
+
+    var intDiff = parseInt({{.endtimes}});//倒计时总秒数量
+    intDiff*=10;
+    function timer(intDiff){
+        window.setInterval(function(){
+            var day=0,
+                hour=0,
+                minute=0,
+                second=0;//时间默认值
+            mini=0;
+            if(intDiff > 0){
+                day = Math.floor(intDiff / (60 * 600 * 24));
+                hour = Math.floor(intDiff / (60 * 600)) - (day * 24);
+                minute = Math.floor(intDiff / 600) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 600) - (hour * 60 * 600) - (minute * 600);
+                second/=10;
+                second=second.toFixed(1);
+
+            }
+            if (minute <= 9) minute = '0' + minute;
+
+            $('#day_show').html(day+"天");
+            $('#hour_show').html('<s id="h"></s>'+hour+'时');
+            $('#minute_show').html('<s></s>'+minute+'分');
+            $('#second_show').html('<s></s>'+second+'秒');
+
+            intDiff--;
+        }, 100);
+    }
+    $(function(){
+        timer(intDiff);
+    });
+  </script>
+
+
+
+
+
+    <div class="time-item5" style="color: white">
+        <i class="iconfont icon-daojishi"></i>
+        投票日期: {{.aptimestart}}到{{.aptimeend}} </div>
+    <div class="time-item5" style="color: white">
+        <i class="iconfont icon-daojishi"></i>
+        活动剩余: <span id="day_show">0天</span>
+        <span id="hour_show">0时</span>
+        <span id="minute_show">0分</span>
+        <span id="second_show">0秒</span>
+
+    </div>
+<div class="paihang2 pd-10 bg-purple3 bg-blue3">
+    <ul>
+	  <li style="background-color: gold">
+	  <span>排名 </span>
+	  <span style="text-align:center;padding-left:0px">选手 </span>
+          <span style="text-align:center;padding-left:0px">票数 </span>
+
+
+      </li>
+       {{/*<a >*/}}
+           {{/*<li>*/}}
+               {{/*<span style="line-height: 120px;flex: 0 25%">*/}}
+                   {{/*<svg style="width: 40px;height: 40px" t="1572277844254" class="icon" viewBox="0 0 1055 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2781" width="200" height="200"><path d="M528.290909 904.016162c-74.084848 0-137.567677-44.993939-164.719192-109.252526-52.234343 4.525253-98.00404 9.955556-140.412121 13.187879-77.317172 6.076768-76.024242 115.070707-76.024242 169.632323H910.351515c0-67.878788 1.292929-159.935354-82.618182-169.632323-44.735354-5.559596-89.6-9.955556-134.593939-13.317172-27.151515 64.258586-90.763636 109.381818-164.848485 109.381819zM86.755556 383.741414L225.874747 739.943434c37.882828-2.715152 78.480808-7.369697 123.862627-11.636363v-3.103031c0-98.650505 80.032323-178.682828 178.682828-178.682828s178.553535 80.161616 178.553535 178.812121v2.19798c41.244444 3.232323 82.359596 7.369697 123.345455 12.412121l141.834343-355.038383c1.551515 0 3.10303-0.129293 4.654546-0.258586 47.709091-4.266667 82.876768-46.416162 78.739394-94.125253-4.137374-47.709091-46.157576-83.006061-93.866667-78.99798-49.260606-1.292929-90.505051 36.848485-93.220202 85.979798-0.129293 19.781818 7.369697 38.917172 20.816162 53.39798L759.725253 491.571717 713.826263 239.579798c39.951515-8.533333 68.39596-43.959596 68.137373-84.816162 2.844444-37.494949-15.515152-73.309091-47.450505-92.832323a99.696485 99.696485 0 0 0-104.339394 0c-32.064646 19.652525-50.424242 55.466667-47.450505 92.832323 0.258586 29.478788 14.868687 57.147475 39.305051 73.826263l-89.212121 249.664646h-2.585859l-93.090909-249.664646c28.185859-13.834343 46.028283-42.537374 45.89899-73.826263-3.749495-52.363636-47.191919-92.832323-99.684849-92.832323-52.492929 0-95.935354 40.59798-99.684848 92.832323-0.775758 42.79596 30.90101 79.385859 73.309091 84.816162l-56.371717 251.991919L165.365657 349.866667c12.929293-14.480808 20.816162-32.711111 22.238383-52.105051-2.068687-49.648485-43.442424-88.436364-93.090909-87.272727-49.907071-1.163636-91.668687 37.365657-94.513131 87.272727 1.422222 47.191919 39.563636 84.945455 86.755556 85.979798z" fill="#D8B52B" p-id="2782"></path><path d="M601.729293 854.367677H460.929293v-28.056566H516.008081V630.820202l-56.50101 17.066667V618.020202l87.40202-26.634343v234.925252h54.820202v28.056566z" fill="#D8B52B" p-id="2783"></path></svg>*/}}
+               {{/*</span>*/}}
+               {{/*<span>*/}}
+                   {{/*<div style="float: left">*/}}
+                       {{/*<img style="width: 100px;height: 100px;border-radius:50%;border: 4px solid #007979;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572285952196&di=970b5ba0cbe492a505e454009ee4b72e&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201208%2F30%2F20120830173930_PBfJE.jpeg">*/}}
+
+                   {{/*</div>*/}}
+                   {{/*<div style="float: left;margin-top: 25px;margin-left: 5px">*/}}
+                       {{/*<div style="color: white;font-size: 18px">肖杰</div>*/}}
+
+                   {{/*</div>*/}}
+
+               {{/*</span>*/}}
+
+               {{/*<span>*/}}
+                     {{/*<div style="margin-top: 30px;color: white">3025票</div>*/}}
+               {{/*</span>*/}}
+           {{/*</li>*/}}
+       {{/*</a>*/}}
+
+
+
+
+
+
+    </ul>
+
+  </div>
+  <div id="list_more" class="box" style="margin-top: 16px; text-align: center;margin-bottom: 40px;"><span class="am-text-secondary" onclick="get_list();">点击加载数据</span></div>
+  <script>
+var limit = 1;
+var rank=0
+function getrank(i) {
+    if(i==1){
+        return '<svg style="width: 40px;height: 40px" t="1572277844254" class="icon" viewBox="0 0 1055 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2781" width="200" height="200"><path d="M528.290909 904.016162c-74.084848 0-137.567677-44.993939-164.719192-109.252526-52.234343 4.525253-98.00404 9.955556-140.412121 13.187879-77.317172 6.076768-76.024242 115.070707-76.024242 169.632323H910.351515c0-67.878788 1.292929-159.935354-82.618182-169.632323-44.735354-5.559596-89.6-9.955556-134.593939-13.317172-27.151515 64.258586-90.763636 109.381818-164.848485 109.381819zM86.755556 383.741414L225.874747 739.943434c37.882828-2.715152 78.480808-7.369697 123.862627-11.636363v-3.103031c0-98.650505 80.032323-178.682828 178.682828-178.682828s178.553535 80.161616 178.553535 178.812121v2.19798c41.244444 3.232323 82.359596 7.369697 123.345455 12.412121l141.834343-355.038383c1.551515 0 3.10303-0.129293 4.654546-0.258586 47.709091-4.266667 82.876768-46.416162 78.739394-94.125253-4.137374-47.709091-46.157576-83.006061-93.866667-78.99798-49.260606-1.292929-90.505051 36.848485-93.220202 85.979798-0.129293 19.781818 7.369697 38.917172 20.816162 53.39798L759.725253 491.571717 713.826263 239.579798c39.951515-8.533333 68.39596-43.959596 68.137373-84.816162 2.844444-37.494949-15.515152-73.309091-47.450505-92.832323a99.696485 99.696485 0 0 0-104.339394 0c-32.064646 19.652525-50.424242 55.466667-47.450505 92.832323 0.258586 29.478788 14.868687 57.147475 39.305051 73.826263l-89.212121 249.664646h-2.585859l-93.090909-249.664646c28.185859-13.834343 46.028283-42.537374 45.89899-73.826263-3.749495-52.363636-47.191919-92.832323-99.684849-92.832323-52.492929 0-95.935354 40.59798-99.684848 92.832323-0.775758 42.79596 30.90101 79.385859 73.309091 84.816162l-56.371717 251.991919L165.365657 349.866667c12.929293-14.480808 20.816162-32.711111 22.238383-52.105051-2.068687-49.648485-43.442424-88.436364-93.090909-87.272727-49.907071-1.163636-91.668687 37.365657-94.513131 87.272727 1.422222 47.191919 39.563636 84.945455 86.755556 85.979798z" fill="#D8B52B" p-id="2782"></path><path d="M601.729293 854.367677H460.929293v-28.056566H516.008081V630.820202l-56.50101 17.066667V618.020202l87.40202-26.634343v234.925252h54.820202v28.056566z" fill="#D8B52B" p-id="2783"></path></svg>'
+    }
+    if(i==2){
+        return '<svg style="width: 40px;height: 40px;" t="1572277868745" class="icon" viewBox="0 0 1055 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2965" width="200" height="200"><path d="M528.290909 904.016162c-74.084848 0-137.567677-44.993939-164.719192-109.252526-52.234343 4.525253-98.00404 9.955556-140.412121 13.187879-77.317172 6.076768-76.024242 115.070707-76.024242 169.632323H910.351515c0-67.878788 1.292929-159.935354-82.618182-169.632323-44.735354-5.559596-89.6-9.955556-134.593939-13.317172-27.151515 64.258586-90.763636 109.381818-164.848485 109.381819zM86.755556 383.741414L225.874747 739.943434c37.882828-2.715152 78.480808-7.369697 123.862627-11.636363v-3.103031c0-98.650505 80.032323-178.682828 178.682828-178.682828s178.553535 80.161616 178.553535 178.812121v2.19798c41.244444 3.232323 82.359596 7.369697 123.345455 12.412121l141.834343-355.038383c1.551515 0 3.10303-0.129293 4.654546-0.258586 47.709091-4.266667 82.876768-46.416162 78.739394-94.125253-4.137374-47.709091-46.157576-83.006061-93.866667-78.99798-49.260606-1.292929-90.505051 36.848485-93.220202 85.979798-0.129293 19.781818 7.369697 38.917172 20.816162 53.39798L759.725253 491.571717 713.826263 239.579798c39.951515-8.533333 68.39596-43.959596 68.137373-84.816162 2.844444-37.494949-15.515152-73.309091-47.450505-92.832323a99.696485 99.696485 0 0 0-104.339394 0c-32.064646 19.652525-50.424242 55.466667-47.450505 92.832323 0.258586 29.478788 14.868687 57.147475 39.305051 73.826263l-89.212121 249.664646h-2.585859l-93.090909-249.664646c28.185859-13.834343 46.028283-42.537374 45.89899-73.826263-3.749495-52.363636-47.191919-92.832323-99.684849-92.832323-52.492929 0-95.935354 40.59798-99.684848 92.832323-0.775758 42.79596 30.90101 79.385859 73.309091 84.816162l-56.371717 251.991919L165.365657 349.866667c12.929293-14.480808 20.816162-32.711111 22.238383-52.105051-2.068687-49.648485-43.442424-88.436364-93.090909-87.272727-49.907071-1.163636-91.668687 37.365657-94.513131 87.272727 1.422222 47.191919 39.563636 84.945455 86.755556 85.979798z" fill="#ADACA8" p-id="2966"></path><path d="M595.911111 845.963636H455.757576v-26.50505l66.973737-70.076768c18.488889-19.393939 30.771717-34.650505 37.107071-45.89899 6.206061-11.248485 9.309091-22.884848 9.309091-35.038384 0-13.705051-3.620202-24.307071-10.989899-31.547474-7.369697-7.369697-17.971717-10.989899-31.806061-10.989899-20.557576 0-40.080808 9.179798-58.69899 27.410101v-31.030303c18.10101-14.610101 39.305051-21.979798 63.353536-21.979798 20.686869 0 37.107071 5.818182 49.131313 17.583838s17.971717 27.539394 17.971717 47.450505c0 14.99798-3.878788 29.608081-11.507071 44.088889-7.628283 14.351515-22.238384 32.711111-43.70101 54.949495l-52.492929 53.785859v0.646464h105.632323v27.151515z" fill="#ADACA8" p-id="2967"></path></svg>'
+    }
+    if(i==3){
+
+        return '<svg  style="width: 40px;height:40px" t="1572277966229" class="icon" viewBox="0 0 1055 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3217" width="200" height="200"><path d="M86.755556 383.741414L225.874747 739.943434c37.882828-2.715152 78.480808-7.369697 123.862627-11.50707V726.626263c0-98.650505 80.032323-178.682828 178.682828-178.682829S706.973737 627.975758 706.973737 726.626263v0.90505c41.244444 3.232323 82.359596 7.369697 123.345455 12.412121l141.834343-355.038383c1.551515 0 3.10303-0.129293 4.654546-0.258586 47.709091-4.266667 82.876768-46.416162 78.739394-94.125253-4.137374-47.709091-46.157576-83.006061-93.866667-78.99798-49.260606-1.292929-90.505051 36.848485-93.220202 85.979798-0.129293 19.781818 7.369697 38.917172 20.816162 53.39798L759.725253 491.571717 713.826263 239.579798c39.951515-8.533333 68.39596-43.959596 68.137373-84.816162 2.844444-37.494949-15.515152-73.309091-47.450505-92.832323a99.696485 99.696485 0 0 0-104.339394 0c-32.064646 19.652525-50.424242 55.466667-47.450505 92.832323 0.258586 29.478788 14.868687 57.147475 39.305051 73.826263l-89.212121 249.664646h-2.585859l-93.090909-249.664646c28.185859-13.834343 46.028283-42.537374 45.89899-73.826263-3.749495-52.363636-47.191919-92.832323-99.684849-92.832323-52.492929 0-95.935354 40.59798-99.684848 92.832323-0.775758 42.79596 30.90101 79.385859 73.309091 84.816162l-56.371717 251.991919L165.365657 349.866667c12.929293-14.480808 20.816162-32.711111 22.238383-52.105051-2.068687-49.648485-43.442424-88.436364-93.090909-87.272727-49.907071-1.163636-91.668687 37.365657-94.513131 87.272727 1.422222 47.191919 39.563636 84.945455 86.755556 85.979798zM528.290909 905.309091c-74.472727 0-138.343434-45.640404-165.236364-110.545455-51.975758 4.525253-97.616162 9.955556-139.894949 13.058586-77.317172 6.076768-76.024242 115.070707-76.024242 169.632323H910.351515c0-67.878788 1.292929-159.935354-82.618182-169.632323-44.606061-5.559596-89.341414-9.955556-134.076767-13.317171-26.892929 65.034343-90.763636 110.80404-165.365657 110.80404z" fill="#AF8A1F" p-id="3218"></path><path d="M456.791919 810.408081c16.678788 13.446465 35.426263 20.29899 56.371717 20.29899 16.808081 0 29.99596-4.266667 39.822223-12.929293 9.826263-8.662626 14.739394-20.169697 14.739394-34.650505 0-32.193939-21.979798-48.355556-66.068687-48.355556h-20.29899v-26.634343h19.264646c39.046465 0 58.569697-15.127273 58.569697-45.381818 0-27.927273-14.868687-42.020202-44.735353-42.020202-17.066667 0-33.09899 6.076768-48.226263 18.10101v-30.383839c15.90303-9.69697 34.521212-14.480808 55.725253-14.480808 20.686869 0 37.365657 5.688889 49.90707 17.066667 12.541414 11.377778 18.876768 26.117172 18.876768 44.218182 0 33.357576-16.161616 54.820202-48.614141 64.387878v0.646465c17.583838 1.939394 31.418182 8.533333 41.632323 19.523232s15.256566 24.824242 15.256565 41.244445c0 22.884848-7.886869 41.373737-23.660606 55.466667-15.773737 14.092929-36.719192 21.074747-62.836363 21.074747-23.014141 0-41.632323-4.525253-55.725253-13.446465v-33.745454z" fill="#AF8A1F" p-id="3219"></path></svg> '
+    }
+    return i
+}
+function get_list(){
+	$("#list_more").html('<div class="am-text-secondary"><span class="am-icon-spinner am-icon-spin"></span> 卖命加载中...</div>');
+
+    var clear_data = JSON.stringify({
+        page:limit,
+        sort:"titcks",
+        search:"",
+        "objid":{{.objid}}
+    });//把
+	$.ajax({
+	    type : "post",
+	    url : "/user/list",
+	    data : clear_data,
+        dataType : "json",
+	    success : function(data) {
+	    	if(data.code==0){
+						var list = data.data.List
+						var content = '';
+						// $(".paihang2").append(list);
+						for(var i=0; i<list.length; i++){
+						   rank++;
+						   {{/*content+='<a href="/wx/toupiao?uuid={{.uuid }}&userid='+list[i]["userid"]+'"><li><span>'+rank+'</span>'*/}}
+						   {{/*// +'<span><img src="'+list[i]['Image1']+'"><i>'+list[i]['Name']+'</i></span>'*/}}
+                                   {{/*+"<span><i>"+list[i]['Name']+"</i></span>"*/}}
+						   {{/*+'<span>'+list[i]['Titcks']+'</span></li></a>'*/}}
+                            content+=' <a href="/wx/toupiao?uuid={{.uuid }}&userid='+list[i]["userid"]+'">' +
+                                ' <li>' +
+                                '               <span style="line-height: 120px;flex: 0 25%;font-size:15px;color: white">' +
+                                    getrank(rank)+
+                                '               </span>' +
+                                '               <span>' +
+                                '                   <div style="float: left">' +
+                                ' <img style="width: 100px;height: 100px;border-radius:50%;border: 4px solid #007979;" src="'+list[i]['Image1']+'">' +
+                                '' +
+                                '                   </div>' +
+                                '                   <div style="float: left;margin-top: 25px;margin-left: 5px">' +
+                                '                       <div style="color: white;font-size: 18px">'+list[i]['Name']+'</div>' +
+                                '' +
+                                '                   </div>' +
+                                '' +
+                                '               </span>' +
+                                '' +
+                                '               <span>' +
+                                '                     <div style="margin-top: 30px;color: white">'+list[i]['Titcks']+'票</div>' +
+                                '               </span>' +
+                                '           </li>' +
+                                '       </a>'
+						}
+						 $(".paihang2 ul").append(content);
+						if(list.length==10){
+							$("#list_more").html('<span class="am-text-secondary" onclick="get_list();">查看更多</span>');
+						}else{
+							$("#list_more").html('<span></span>');
+						}
+
+
+						limit++;
+		    }else if(data.status==301){
+	    		$("#list_more").html('<span>没有更多记录！</span>');
+	    	}else{
+			    $("#list_more").html('<span>没有更多记录！</span>');
+			}
+	    },
+	    error : function(xhr, type) {
+
+	    }
+	});
+}
+get_list();
+</script>
+<style>
+
+.datalist .item3:nth-child(3) {color:#444}
+
+</style>
+
+<script type="text/javascript">
+
+function share_success(){
+
+  $.post("/Wxhd/GiftVote/share_success/user_id/11/id/550.so",{},function(){});
+
+}
+
+</script>
+
+
+
+<style>
+  #zanzhu2{background:url('/images/ts.png') no-repeat;background-size:19px 19px;background-position:0px 4px}
+
+</style>
+
+<div style="height:50px;"></div>
+<div class="footer">
+    <ul>
+
+
+        <li><a href="/wx/index/{{.objid}}"  class="nav" ><i class='nav'><i class="iconfont icon-taikong-"></i><p>首页</p></i></a></li>
+        <li><a href="/wx/jp/{{.objid }}" ><div class='nav'><div class='is ispr iconfont icon-jiangpin'></div><p>奖品</p></div></a></li>
+        <li><a href="javascript:;"   onclick="get_ap();"><div class='nav'><div class='ib ispr iconfont icon-baoming'></div><p>报名</p></div></a></li>
+        <li><a href="/wx/sort/{{ .objid}}"  class="on" ><div class='nav'><div class='if ispr iconfont icon-bangdan'></div><p>榜单</p></div></a></li>
+
+        {{/*<li><a href="/wx/toushu"  ><div class='nav'><div class='is ispr' id="zanzhu2"></div><p>投诉</p></div></a></li>*/}}
+
+    </ul>
+</div>
+<script type="text/javascript">
+    function get_ap() {
+        {{ if gt  .aptimes 0 }}
+        dialog2("未开始报名！")
+        return false;
+        {{ else if lt .endtimes 0 }}
+        dialog2("活动已经结束！")
+        return false;
+        {{  end}}
+        location.href = "/wx/baoming/{{ .objid}}";
+    }
+</script>
+
+
+
+
+	</div>
+	<!-- 提示弹窗start -->
+
+
+
+		<script>
+
+		wx.config({
+				debug: false,
+				appId: '{{ .appId }}',
+				timestamp: '{{  .timestamp }}',
+				nonceStr: '{{ .noncestr}}',
+				signature: '{{.signature}}',
+				jsApiList: [
+					'checkJsApi',
+					'onMenuShareTimeline',
+					'onMenuShareAppMessage',
+					'onMenuShareQQ',
+					'onMenuShareWeibo',
+					'startRecord',
+					'stopRecord',
+					'onVoiceRecordEnd',
+					'playVoice',
+					'pauseVoice',
+					'stopVoice',
+					'onVoicePlayEnd',
+					'uploadVoice',
+					'downloadVoice',
+					'chooseImage',
+					'previewImage',
+					'uploadImage',
+					'downloadImage',
+					'translateVoice',
+					'getNetworkType',
+					'openLocation',
+					'getLocation',
+					'hideOptionMenu',
+					'showOptionMenu',
+					'hideMenuItems',
+					'showMenuItems',
+					'hideAllNonBaseMenuItem',
+					'showAllNonBaseMenuItem',
+					'closeWindow',
+					'scanQRCode',
+					'chooseWXPay',
+					'openProductSpecificView',
+					'addCard',
+					'chooseCard',
+					'openCard'
+				]
+			});
+
+
+			  var sharedata = {"title":'{{ .sharetitle }}',"imgUrl":"{{ .shareimgV }}","desc":"{{ .sharedesc }}","link":"{{ .url }}"};
+                sharedata.success = function(){
+			// var url = "./index.php?i=25&c=entry&ty=share&rid=3319&do=Count&m=tyzm_diamondvote";
+			// $.post(url, function(dat){});
+	};
+                if(sharedata.desc == ''){
+		var _share_content = _removeHTMLTag($('body').html());
+		if(typeof _share_content == 'string'){
+			sharedata.desc = _share_content.replace($_share['title'], '')
+		}
+	}
+			// 在这里调用 wxAPI
+			wx.ready(function () {
+
+				//显示右上角菜单
+                wx.showOptionMenu();
+                wx.onMenuShareAppMessage(sharedata);
+                wx.onMenuShareTimeline(sharedata);
+                wx.onMenuShareQQ(sharedata);
+                wx.onMenuShareWeibo(sharedata);
+
+
+			});
+
+
+		</script>
+
+
+<div id="dialog2" style="opacity: 1;display:none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__bd">返回错误！</div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:hidemod('dialog2');" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+            </div>
+        </div>
+</div>
+
+<div id="toast" style="opacity: 1; display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content" style="color:#fff">已完成</p>
+        </div>
+</div>
+<div id="loadingToast" style="opacity: 1; display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content" style="color:#fff">数据加载中</p>
+        </div>
+</div>
+<!-- 提示弹窗start -->
+
+	<script type="text/javascript">
+
+	function dialog2(msg){
+	    $("#dialog2 .weui-dialog__bd").html(msg);
+	    $("#dialog2").show();
+	}
+	function hidemod(boxid){
+	    $("#"+boxid).hide();
+	}
+	function loadingToast(msg){
+	    $("#loadingToast .weui-toast__content").html(msg);
+	    $("#loadingToast").show();
+	}
+	function toast(msg){
+	    $("#toast .weui-toast__content").html(msg);
+	    $("#toast").show();
+		setTimeout("hidemod('toast')",2000);
+	}
+
+	wx.ready(function () {
+		wx.hideMenuItems({
+		  menuList:["menuItem:copyUrl","menuItem:originPage", "menuItem:share:email","menuItem:openWithQQBrowser","menuItem:openWithSafari","menuItem:share:brand"],
+
+		});
+
+	});
+
+	</script>
+
+</body>
+</html>

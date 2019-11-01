@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AACA,gBACE,WACF,CACA,6BACE,WAAY,CACZ,YACF","file":"main.6a7d7ad3.chunk.css","sourcesContent":["\r\nhtml, body, #root {\r\n  height: 100%;\r\n}\r\n.avatar-uploader > .ant-upload {\r\n  width: 128px;\r\n  height: 128px;\r\n}"]}
