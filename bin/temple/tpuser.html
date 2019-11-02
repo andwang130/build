@@ -32,7 +32,7 @@
 
 </head>
 <body>
-<div class="container container-fill">
+<div class="container container-fill" style="background-color: #CE0000;color: white;">
 
     {{ template "audio.html" . }}
 
@@ -268,7 +268,7 @@ line-height:28px;
 <div style="width: 90%; margin: 0 auto;margin-top:20px;overflow:hidden;">
                 <div style="width: 100%; text-align: left; padding-bottom: 20px;">
                     <div id="jiandiv2">
-                        <div id="jiandiv">
+                        <div id="jiandiv" style="background-color: #CE0000">
                             选手介绍
                         </div>
                         <div style="padding: 0px 0px 10px 10px; margin-top: -10px;">
@@ -315,7 +315,7 @@ line-height:28px;
 </div>
 </div>
 
-<div class="img">
+<div class="img" style="background-color: #CE0000;width:100%">
 
       {{ range $index,$value:=.images  }}
           {{ if ne $value ""}}
